@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Auction - Easy Live Auction</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <!-- <script src="js/web3.js"></script> -->
+    <!--  <script src="js/web3-light.min.js"></script>
+  <script src="js/web3-light.js"></script> -->
+    <!-- <script src="js/constract.js"></script> -->
+
+</head>
+
+<body style="margin: 0, padding 0, height : 100%, width : 100%">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Auction</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Create Auction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" style="margin-top: 100px;">
+        <h1>Auction Create</h1>
+        <form>
+            <div class="form-group row">
+                <label for="title" class="col-2 col-form-label">Title</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" id="title" placeholder="Title...">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-2 col-form-label">Description</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" id="description" placeholder="Description...">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="image" class="col-2 col-form-label">Image</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" id="image" placeholder="Image link...">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="assetofaddress" class="col-2 col-form-label">Constract Address of Asset</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" id="assetofaddress" value="">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="biddingtime" class="col-2 col-form-label">Bidding Time</label>
+                <div class="col-10">
+                    <input type="number" class="form-control" id="biddingtime" placeholder="Bidding Time ">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="distributioncut" class="col-2 col-form-label">Distribution Cut</label>
+                <div class="col-10">
+                    <input type="number" class="form-control" id="distributioncut" placeholder="Distribution Cut">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="startingprice" class="col-2 col-form-label">Starting Price</label>
+                <div class="col-10">
+                    <input type="number" class="form-control" id="startingprice" placeholder="Starting Price">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="executefrom" class="col-2 col-form-label">Execute From</label>
+                <div class="col-10">
+                    <select class="form-control" id="comboboxAccount"></select>
+                </div>
+            </div>
+            <div class="form-group row" style="margin-bottom: 20px">
+                <label for="password" class="col-2 col-form-label">Password</label>
+                <div class="col-10">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group row" align="center" style="margin-left : 40% !important">
+                <button type="submit " class="btn btn-primary " onclick="createAuction()">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark " style="margin: 0px">
+        <div class="container ">
+            <p class="m-0 text-center text-white ">Copyright &copy; Your Website 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+    <script>
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+        var abi = [{
+            "constant": false,
+            "inputs": [],
+            "name": "withdrawRefund",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getBidForAuctionByIdx",
+            "outputs": [{
+                "name": "bidder",
+                "type": "address",
+                "value": "0x"
+            }, {
+                "name": "amount",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "timestamp",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "addr",
+                "type": "address"
+            }, {
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getAuctionIdForUserAndIdx",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "getBidCountForAuction",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "activateAuction",
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctions",
+            "outputs": [{
+                "name": "seller",
+                "type": "address",
+                "value": "0xb88d6ea08fba916baf09d7cf1a2ca910b9f67881"
+            }, {
+                "name": "contractAddress",
+                "type": "address",
+                "value": "0x31ce2d5404044888923dd55fa11eda380525e2a4"
+            }, {
+                "name": "title",
+                "type": "string",
+                "value": "LAPTOP"
+            }, {
+                "name": "description",
+                "type": "string",
+                "value": "MSI1200"
+            }, {
+                "name": "image",
+                "type": "string",
+                "value": "https://www.google.com.vn/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiP2oTjzuLXAhUBUbwKHdGbBrcQjRwIBw&url=https%3A%2F%2Fwww.gentechpc.com%2FMSI-GS73VR-Stealth-Pro-224-nVidia-Pascal-GTX-1060-p%2Fmsi-gs73vr-stealth-pro-224.htm&psig=AOvVaw27RkjOebZHUxvbW2uv4h1E&ust=1512004751211531"
+            }, {
+                "name": "auctionEnd",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "biddingTime",
+                "type": "uint256",
+                "value": "2000"
+            }, {
+                "name": "status",
+                "type": "uint8",
+                "value": "0"
+            }, {
+                "name": "distributionCut",
+                "type": "uint256",
+                "value": "9"
+            }, {
+                "name": "distributionAddress",
+                "type": "address",
+                "value": "0x31ce2d5404044888923dd55fa11eda380525e2a4"
+            }, {
+                "name": "startingPrice",
+                "type": "uint256",
+                "value": "1000000000"
+            }, {
+                "name": "currentBid",
+                "type": "uint256",
+                "value": "1000000000"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getRefundValue",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getStatus",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getAuction",
+            "outputs": [{
+                "name": "",
+                "type": "address",
+                "value": "0xb88d6ea08fba916baf09d7cf1a2ca910b9f67881"
+            }, {
+                "name": "",
+                "type": "address",
+                "value": "0x31ce2d5404044888923dd55fa11eda380525e2a4"
+            }, {
+                "name": "",
+                "type": "string",
+                "value": "LAPTOP"
+            }, {
+                "name": "",
+                "type": "string",
+                "value": "MSI1200"
+            }, {
+                "name": "",
+                "type": "string",
+                "value": "https://www.google.com.vn/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiP2oTjzuLXAhUBUbwKHdGbBrcQjRwIBw&url=https%3A%2F%2Fwww.gentechpc.com%2FMSI-GS73VR-Stealth-Pro-224-nVidia-Pascal-GTX-1060-p%2Fmsi-gs73vr-stealth-pro-224.htm&psig=AOvVaw27RkjOebZHUxvbW2uv4h1E&ust=1512004751211531"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "9"
+            }, {
+                "name": "",
+                "type": "address",
+                "value": "0x31ce2d5404044888923dd55fa11eda380525e2a4"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "1000000000"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "1000000000"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctionsBidOnByUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "cancelAuction",
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "placeBid",
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
+            "payable": true,
+            "stateMutability": "payable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "addr",
+                "type": "address"
+            }],
+            "name": "getAuctionsCountForUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctionsRunByUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "endAuction",
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getAuctionCount",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "1"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "_title",
+                "type": "string"
+            }, {
+                "name": "_description",
+                "type": "string"
+            }, {
+                "name": "_image",
+                "type": "string"
+            }, {
+                "name": "_contractAddressOfAsset",
+                "type": "address"
+            }, {
+                "name": "_biddingTime",
+                "type": "uint256"
+            }, {
+                "name": "_startingPrice",
+                "type": "uint256"
+            }, {
+                "name": "_distributionCut",
+                "type": "uint256"
+            }],
+            "name": "createAuction",
+            "outputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "title",
+                "type": "string"
+            }, {
+                "indexed": false,
+                "name": "startingPrice",
+                "type": "uint256"
+            }],
+            "name": "AuctionCreated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionActivated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionNotActivated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionCancelled",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "bidder",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            }],
+            "name": "BidPlaced",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "winningBidder",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            }],
+            "name": "AuctionEndedWithWinner",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "topBid",
+                "type": "uint256"
+            }],
+            "name": "AuctionEndedWithoutWinner",
+            "type": "event"
+        }];
+
+        function createAuction() {
+            var title = document.getElementById("title").value;
+            alert("dungdam" + title);
+            var description = document.getElementById("description").value;
+            alert("dungdam" + description);
+            var image = document.getElementById("image").value;
+            alert("dungdam" + image);
+            var assetofaddress = document.getElementById("assetofaddress").value;
+            alert("dungdam" + assetofaddress);
+            var biddingtime = document.getElementById("biddingtime").value;
+            alert("dungdam" + biddingtime);
+            var distributioncut = document.getElementById("distributioncut").value;
+            alert("dungdam" + distributioncut);
+            var startingprice = document.getElementById("startingprice").value;
+            alert("dungdam" + startingprice);
+            //var executefrom = document.getElementById("executefrom").value;
+            //var password = document.getElementById("password").value;
+
+            web3.personal.unlockAccount("0xB88D6Ea08Fba916BaF09d7cF1a2Ca910B9F67881", "123456789", function(err, data) {
+                if (err) {
+                    alert(dasdas)
+                }
+            });
+            web3.eth.contract(abi).at('0x583cdb18739DA3f109D42989fD59AF8b3a39936D').createAuction.sendTransaction(
+                title, description, image, assetofaddress, biddingtime, startingprice, distributioncut, {
+                    from: "0xB88D6Ea08Fba916BaF09d7cF1a2Ca910B9F67881",
+                    gas: 500000
+                });
+        }
+
+        var a = web3.eth.accounts;
+
+        console.log(a);
+
+        for (i = 0; i < a.length; i++) {
+            $("#comboboxAccount ").append(`
+                      <option>${a[i]}</option>
+                      `)
+    </script>
+</body>
+
+</html>

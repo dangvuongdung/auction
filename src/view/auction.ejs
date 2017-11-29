@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Auction</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/config.js">
+    </script>
+
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Auction</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/createauction">Create Auction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+
+                <h1 class="my-4">Action
+                    <small>The Product</small>
+                </h1>
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                    <div class="card-body">
+                        <h2 class="card-title">Post Title</h2>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+                <!-- Search Widget -->
+                <div class="card my-3">
+                    <h5 class="card-header">Bid this product</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="executefrom">Execute From</label>
+                                    <select class="form-control" id="comboboxAccount"></select>
+                                </div>
+                                <label for="title ">Password</label>
+                                <input type="input " class="form-control " id="password " placeholder="Password ">
+                            </div>
+                            <div class="form-group ">
+                                <label for="description ">Bid Price</label>
+                                <input type="input " class="form-control " id="bidprice " placeholder=" Bid Price ">
+                            </div>
+                            <button type="submit " class="btn btn-primary " onclick="myFunction() ">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top : 200px">
+                <table>
+                    <tr>
+                        <th>Bidder</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    <tr>
+                        <td>Alfreds Futterkiste</td>
+                        <td>Maria Anders</td>
+                        <td>Germany</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark " style="margin-top: 10px">
+        <div class="container ">
+            <p class="m-0 text-center text-white ">Copyright &copy; Your Website 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+    <script type="text/javascript ">
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545 "));
+        }
+        var abi = ;
+
+        console.log(config.contractAddress);
+
+        console.log(web3.eth.contract(abi).at('0xD7bb7fa4f983DF7e3B065fA46297154029087243'));
+
+
+        var a = web3.eth.accounts;
+
+        console.log(a);
+
+        for (i = 0; i < a.length; i++) {
+            $("#comboboxAccount ").append(`
+              <option>${a[i]}</option>
+              `)
+        }
+        //   function myFunction() {
+        // web3.
+        //}
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <!-- script src="jquery.min.js ">
+        </script>
+        <script src="js/bootstrap.bundle.min.js "></script> -->
+
+</body>
+
+</html>

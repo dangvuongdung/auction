@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+
+
+    <title>Auction - Easy Live Auction </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Auction</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/createauction">Create Auction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="raw" id="raw">
+        </div>
+        <!-- Page Heading -->
+        <h1 class="my-4">Auction
+        </h1>
+
+        <!-- Page Features -->
+        <div class="row text-center" id="wrapper">
+
+
+        </div>
+
+
+
+    </div>
+    <!-- /.container -->
+
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+        var abi = [{
+            "constant": false,
+            "inputs": [],
+            "name": "withdrawRefund",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getBidForAuctionByIdx",
+            "outputs": [{
+                "name": "bidder",
+                "type": "address",
+                "value": "0x"
+            }, {
+                "name": "amount",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "timestamp",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "addr",
+                "type": "address"
+            }, {
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getAuctionIdForUserAndIdx",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "getBidCountForAuction",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "activateAuction",
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctions",
+            "outputs": [{
+                "name": "seller",
+                "type": "address",
+                "value": "0x3cde07aad0705740987b4bdc16073612211f2b62"
+            }, {
+                "name": "contractAddress",
+                "type": "address",
+                "value": "0x1654c02900a21ad037b9949247ca48e24f9b8dbd"
+            }, {
+                "name": "title",
+                "type": "string",
+                "value": "LAP1"
+            }, {
+                "name": "description",
+                "type": "string",
+                "value": "TI1223"
+            }, {
+                "name": "auctionEnd",
+                "type": "uint256",
+                "value": "0"
+            }, {
+                "name": "biddingTime",
+                "type": "uint256",
+                "value": "60000"
+            }, {
+                "name": "status",
+                "type": "uint8",
+                "value": "0"
+            }, {
+                "name": "distributionCut",
+                "type": "uint256",
+                "value": "10"
+            }, {
+                "name": "distributionAddress",
+                "type": "address",
+                "value": "0x1654c02900a21ad037b9949247ca48e24f9b8dbd"
+            }, {
+                "name": "startingPrice",
+                "type": "uint256",
+                "value": "100000000"
+            }, {
+                "name": "currentBid",
+                "type": "uint256",
+                "value": "100000000"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "_title",
+                "type": "string"
+            }, {
+                "name": "_description",
+                "type": "string"
+            }, {
+                "name": "_contractAddressOfAsset",
+                "type": "address"
+            }, {
+                "name": "_biddingTime",
+                "type": "uint256"
+            }, {
+                "name": "_startingPrice",
+                "type": "uint256"
+            }, {
+                "name": "_distributionCut",
+                "type": "uint256"
+            }],
+            "name": "createAuction",
+            "outputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getRefundValue",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getStatus",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "idx",
+                "type": "uint256"
+            }],
+            "name": "getAuction",
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "string"
+            }, {
+                "name": "",
+                "type": "string"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }, {
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctionsBidOnByUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "cancelAuction",
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "placeBid",
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
+            "payable": true,
+            "stateMutability": "payable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "addr",
+                "type": "address"
+            }],
+            "name": "getAuctionsCountForUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "name": "",
+                "type": "address"
+            }, {
+                "name": "",
+                "type": "uint256"
+            }],
+            "name": "auctionsRunByUser",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "0"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "name": "auctionId",
+                "type": "uint256"
+            }],
+            "name": "endAuction",
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "getAuctionCount",
+            "outputs": [{
+                "name": "",
+                "type": "uint256",
+                "value": "3"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "title",
+                "type": "string"
+            }, {
+                "indexed": false,
+                "name": "startingPrice",
+                "type": "uint256"
+            }],
+            "name": "AuctionCreated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionActivated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionNotActivated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "AuctionCancelled",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "bidder",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            }],
+            "name": "BidPlaced",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "winningBidder",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            }],
+            "name": "AuctionEndedWithWinner",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": false,
+                "name": "auctionId",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "name": "topBid",
+                "type": "uint256"
+            }],
+            "name": "AuctionEndedWithoutWinner",
+            "type": "event"
+        }];
+
+
+
+        console.log(web3.eth.contract(abi).at('0xD7bb7fa4f983DF7e3B065fA46297154029087243'));
+
+
+        var a = web3.eth.contract(abi).at('0xD7bb7fa4f983DF7e3B065fA46297154029087243').getAuctionCount.call().toNumber();
+        console.log(a);
+        var dm = [];
+
+        for (i = 0; i < 2; i++) {
+
+            var s = web3.eth.contract(abi).at('0xD7bb7fa4f983DF7e3B065fA46297154029087243').getAuction.call(i);
+            dm.push(s);
+
+        }
+
+        // var a=dm[1].split(",", 10)
+        // var b=dm[0].split(",", 10)
+        //console.log(dm[1][0]);
+        // console.log(b[1]);
+
+        console.log(dm);
+        //document.getElementById("title").innerHTML = dm[0][2];
+        dm.forEach(i => {
+            $("#wrapper").append(`
+          <div class="col-lg-3 col-md-6 mb-4 ">
+          <div class="card">
+            <img class="card-img-top" src="http://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c05116270.png" alt="">
+            <div class="card-body">
+              <h4 class="card-title" id="title">${i[2]}</h4>
+              <p class="card-text" id="description" >${i[3]}</p>
+              <p id ="test">${i[4]}</p>
+              <p id ="test">${i[5]}</p>
+            </div>
+             
+            <div class="card-footer">
+              <a href="${i}" class="btn btn-primary">BID</a>
+            </div>
+          </div>
+        
+        </div>
+          `)
+        })
+
+        // $(document).ready(function(){
+
+        //    $('#raw').innerHTML(s);
+
+        // });
+    </script>
+</body>
+
+</html>
